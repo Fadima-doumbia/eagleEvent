@@ -1,10 +1,12 @@
 package com.eagle.Event.service;
 
 import com.eagle.Event.dto.UserDto;
+import com.eagle.Event.dto.UserEditDto;
 import com.eagle.Event.model.User;
 import com.eagle.Event.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     private final ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    PasswordEncoder encoder;
 
     public List<User> getAllUsers () {
         return userRepository.findAll();
@@ -27,6 +31,13 @@ public class UserService {
     public User saveUserSimple(User user){
 //        User user1 = userRepository.save(user);
         return userRepository.save(user);
+    }
+
+    public User editUser(UserEditDto personDto){
+
+            User person = modelMapper.map(personDto, User.class);
+
+        return userRepository.save(person);
     }
 
     public User updateUser(UserDto personDto){
