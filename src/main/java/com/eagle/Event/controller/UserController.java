@@ -6,6 +6,7 @@ import com.eagle.Event.service.UserService;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,8 +46,9 @@ public class UserController {
         userService.deleteUser(personId);
     }
 
-    @PutMapping("/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("")
     public User updateUser(@RequestBody UserDto personDto){
-        return userService.updateUser(personDto);
+        return userService.edit(personDto);
     }
 }
