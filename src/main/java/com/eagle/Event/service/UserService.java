@@ -41,8 +41,20 @@ public class UserService {
     }
 
     public User updateUser(UserDto personDto){
-        User person = modelMapper.map(personDto, User.class);
-        return userRepository.save(person);
+//        User person = modelMapper.map(personDto, User.class);
+        User user = new User();
+        user.setUsername(personDto.getUsername());
+        user.setEmail(personDto.getEmail());
+        user.setLastName(personDto.getLastName());
+        user.setBirthday(personDto.getBirthday());
+        user.setId(personDto.getId());
+        user.setPhone(personDto.getPhone());
+        return userRepository.save(user);
+    }
+
+    public User edit(UserDto userDto){
+        User user = modelMapper.map(userDto, User.class);
+        return userRepository.save(user);
     }
 
     public void deleteUser(Long id){
