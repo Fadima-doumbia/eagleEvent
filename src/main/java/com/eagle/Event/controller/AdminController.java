@@ -2,8 +2,10 @@ package com.eagle.Event.controller;
 
 import com.eagle.Event.dto.UserDto;
 import com.eagle.Event.dto.UserEditDto;
+import com.eagle.Event.model.Event;
 import com.eagle.Event.model.User;
 import com.eagle.Event.repository.UserRepository;
+import com.eagle.Event.service.EventService;
 import com.eagle.Event.service.UserService;
 import lombok.Data;
 import org.modelmapper.ModelMapper;
@@ -22,13 +24,15 @@ public class AdminController {
     private final ModelMapper modelMapper = new ModelMapper();
     @Autowired
     PasswordEncoder encoder;
+    @Autowired
+    EventService eventService;
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping("/users/{userId}")
     public void userDelete (@PathVariable("userId") final Long personId){
         userService.deleteUser(personId);
     }
 
-    @PutMapping("/{userId}")
+    @PutMapping("/users/{userId}")
     public User updateUser(@RequestBody UserEditDto personDto){
         User user= userRepository.findById(personDto.getId()).get();
         String password = encoder.encode(user.getPassword());
@@ -38,4 +42,15 @@ public class AdminController {
         }
         return null;
     }
+
+    @PostMapping("/event/final")
+    public Event saveEventFinal(@RequestBody Event event){
+        return eventService.saveEvent(event);
+    }
+
+    @PostMapping("/event")
+    public Event saveEvent(@RequestBody Event event){
+        return eventService.saveEvent(event);
+    }
+
 }
